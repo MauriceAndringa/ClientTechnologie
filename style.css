@@ -1,19 +1,24 @@
-html, body { height: 100%; width: 100%; margin: 0; }
+html, body { height: 100%; width: 100%; margin: 0; background-color: black;}
 
 #gameview{
+	display: inline-block;
 	box-sizing: border-box;
-	width: 100%;
-	height: 70%;
-	background-color: orange;
-	opacity: 10%;
+	width: 69%;
+	height: 95%;
+	background-color: rgb(204, 204, 204);
+	margin: 5px 15px 0px 5px;
+	border-bottom: 10px dotted white;
+	border-top: 10px dotted white;
 }
 
 #chatview {
+	display: inline-block;
 	box-sizing: border-box;
-	width: 100%;
-	height: 30%;
-	background-color: #ccc;
-	margin-top: 10px;
-	border: 5px solid black;
-	border-radius: 10px;
+	width: 29%;
+	height: 95%;
+	background-color: rgb(204, 204, 204);
+	
+	margin: 5px 5px 0px 5px;
+	border-bottom: 10px dotted white;
+	border-top: 10px dotted white;
 }
