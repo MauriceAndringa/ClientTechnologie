@@ -7,7 +7,14 @@
 	<body>
 		<section id="gameview">
 			<canvas id="gamefield">
+				<script>
+					var c = document.getElementById("gamefield");
+					var ctx = c.getContext("2d");
+					ctx.beginPath();
+					ctx.arc(100, 50, 50	, 0, 2*Math.PI);
+					ctx.stroke();
 
+				</script>
 			</canvas>
 		</section>
 		
