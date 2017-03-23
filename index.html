@@ -6,13 +6,20 @@
 	</head>
 	<body>
 		<section id="gameview">
-			<canvas id="gamefield">
+			<canvas id="gamefield" width="800" height="600">
 				<script>
 					var c = document.getElementById("gamefield");
 					var ctx = c.getContext("2d");
 					ctx.beginPath();
-					ctx.arc(100, 50, 50	, 0, 2*Math.PI);
+
+					//cirkel
+					ctx.arc(375, 300, 225, 0, 2*Math.PI);
+					ctx.fillStyle = 'grey';
+					ctx.fill();
+					ctx.lineWidth = 3;
 					ctx.stroke();
+
+
 
 				</script>
 			</canvas>
