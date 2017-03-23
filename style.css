@@ -14,7 +14,7 @@ html, body { height: 100%; width: 100%; margin: 0; background-color: black;}
 #gamefield{
 	width: 800px;
 	height: 600px;
-	background-color: white;
+	background-color: orange;
 }
 
 #chatview {
