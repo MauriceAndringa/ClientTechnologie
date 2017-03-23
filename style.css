@@ -3,22 +3,27 @@ html, body { height: 100%; width: 100%; margin: 0; background-color: black;}
 #gameview{
 	display: inline-block;
 	box-sizing: border-box;
-	width: 69%;
-	height: 95%;
+	width: 800px;
+	height: 600px;
 	background-color: rgb(204, 204, 204);
-	margin: 5px 15px 0px 5px;
+	margin: 5px 5px 5px 5px;
 	border-bottom: 10px dotted white;
 	border-top: 10px dotted white;
+}
+
+#gamefield{
+	width: 800px;
+	height: 600px;
 }
 
 #chatview {
 	display: inline-block;
 	box-sizing: border-box;
-	width: 29%;
-	height: 95%;
+	width: 400px;
+	height: 600px;
 	background-color: rgb(204, 204, 204);
 	
-	margin: 5px 5px 0px 5px;
+	margin: 5px 5px 10px 5px;
 	border-bottom: 10px dotted white;
 	border-top: 10px dotted white;
 }
