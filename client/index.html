@@ -1,10 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Node,JS Game</title>
-</head>
-<body>
+    <title>Steen, Papier en Schaar</title>
+    <link rel="stylesheet" href="styles/main.css">
 
+</head>
+
+<body>
+    <div class="sps-wrapper">
+        <ul id="events">
+        </ul>
+
+        <div class="button-wrapper">
+            <form id="chat-form">
+                <input id="chat">
+                <button id="send">Verstuur bericht</button>
+            </form>
+
+            <button id="steen">Steen</button>
+            <button id="papier">Papier</button>
+            <button id="schaar">Schaar</button>
+
+        </div>
+    </div>
+    <!-- scripts must be called after the page has loaded -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="src/client.js"></script>
 </body>
+
 </html>
