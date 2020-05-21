@@ -1,0 +1,40 @@
+/*#splash{*/
+/*    background-image: url("../img/dickbutt.jpg");*/
+/*    position: fixed;*/
+/*    width: 100%;*/
+/*    height: 100%;*/
+/*    animation: splash-screen 1s linear 5s;*/
+/*    animation-fill-mode: forwards;*/
+/*}*/
+
+.sps-wrapper{
+    display: none;
+}
+
+/*#login{*/
+/*    opacity: 0;*/
+/*    animation: content 0s linear 5s;*/
+/*    animation-fill-mode: forwards;*/
+/*}*/
+
+@keyframes splash-screen{
+    from {
+        opacity: 1;
+    }
+    10% {
+        opacity: 0.1;
+    }
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+@keyframes content {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
