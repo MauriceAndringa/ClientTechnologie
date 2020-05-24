@@ -53,18 +53,23 @@
         </div>
     </div>
 
-    <div class="sps-wrapper">
+    <div class="sps-wrapper" id="sps-wrapper">
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
+                    <div class="well">
+                        <h3>Online Users</h3>
+                        <ul class="list-group" id="users"></ul>
+                    </div>
                     <form id="chat-form">
-                        <div class="form-control">
-                            <input id="chat-message" class="form-control" placeholder="Bericht...">
+                        <div class="form-group">
+                            <input id="chat" class="form-control" placeholder="Bericht...">
                         </div>
-                        <button id="chat-send" class="btn btn-primary">Verstuur</button>
+                        <button id="send" class="btn btn-primary">Verstuur</button>
                     </form>
                     <ul id="events" class="list-group"></ul>
                 </div>
+                <h4 id="status" class="text-status">Wachten op andere speler...</h4>
                 <div class="button-wrapper col-md-6">
                     <button id="sps-steen" class="btn btn-secondary">STEEN</button>
                     <button id="sps-papier" class="btn btn-secondary">PAPIER</button>
