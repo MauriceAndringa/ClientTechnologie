@@ -84,6 +84,7 @@ function writeText(text){
     const parent = document.querySelector("#events");
     //Create a new list item
     const el = document.createElement('li');
+    el.className = "list-group-item";
     //Set the text of the list item to the text passed through the function
     el.innerHTML = text;
     //Add the newly created list item to the parent list

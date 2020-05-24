@@ -5,79 +5,94 @@
     <meta charset="UTF-8">
     <title>Steen, Papier en Schaar</title>
     <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"  integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 
 <body>
 
-    <!--<div id="splash"></div>-->
+<!--<div id="splash"></div>-->
 
-    <div id="login" class="login">
-        <div class="container">
-            <div class="header">
-                <h1>Steen Papier Schaar</h1>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <h3>Maak een kamer aan!</h3>
-                    <form id="create-form">
-                        <div class="form-group">
-                            <label for="create-name">Gebruikersnaam</label>
-                            <input type="text" class="form-control" id="create-name" placeholder="Super_awes0me-user1">
-                        </div>
-                        <div class="form-group">
-                            <label for="create-id">Kamernummer</label>
-                            <input type="number" class="form-control" id="create-id" placeholder="0, 1, 2...">
-                        </div>
-                        <hr>
-                        <input type="submit" class="btn btn-primary" value="Start spel!">
-                    </form>
-                </div>
-                <div class="col-md-6">
-                    <h3>Doe mee aan een spel!</h3>
-                    <form id="join-form">
-                        <div class="form-group">
-                            <label for="join-name">Gebruikersnaam</label>
-                            <input type="text" class="form-control" id="join-name" placeholder="SPS-L33t_playr">
-                        </div>
-                        <div class="form-group">
-                            <label for="join-id">Kamernummer</label>
-                            <input type="number" class="form-control" id="join-id" placeholder="Voer een beschikbare kamer in">
-                        </div>
-                        <hr>
-                        <input type="submit" class="btn btn-primary" value="Doe mee!">
-                    </form>
-                </div>
-            </div>
+<div id="login" class="login">
+    <div class="container">
+        <div class="header">
+            <h1>Steen Papier Schaar</h1>
         </div>
-    </div>
 
-    <div class="sps-wrapper" id="sps-wrapper">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="well">
-                        <h3>Online Users</h3>
-                        <ul class="list-group" id="users"></ul>
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Maak een kamer aan!</h3>
+                <form id="create-form">
+                    <div class="form-group">
+                        <label for="create-name">Gebruikersnaam</label>
+                        <input type="text" class="form-control" id="create-name" placeholder="Super_awes0me-user1">
                     </div>
-                    <form id="chat-form">
-                        <div class="form-group">
-                            <input id="chat" class="form-control" placeholder="Bericht...">
-                        </div>
-                        <button id="send" class="btn btn-primary">Verstuur</button>
-                    </form>
-                    <ul id="events" class="list-group"></ul>
-                </div>
-                <h4 id="status" class="text-status">Wachten op andere speler...</h4>
-                <div class="button-wrapper col-md-6">
-                    <button id="sps-steen" class="btn btn-secondary">STEEN</button>
-                    <button id="sps-papier" class="btn btn-secondary">PAPIER</button>
-                    <button id="sps-schaar" class="btn btn-secondary">SCHAAR</button>
-                </div>
+                    <div class="form-group">
+                        <label for="create-id">Kamernummer</label>
+                        <input type="number" class="form-control" id="create-id" placeholder="0, 1, 2...">
+                    </div>
+                    <hr>
+                    <input type="submit" class="btn btn-primary" value="Start spel!">
+                </form>
+            </div>
+            <div class="col-md-6">
+                <h3>Doe mee aan een spel!</h3>
+                <form id="join-form">
+                    <div class="form-group">
+                        <label for="join-name">Gebruikersnaam</label>
+                        <input type="text" class="form-control" id="join-name" placeholder="SPS-L33t_playr">
+                    </div>
+                    <div class="form-group">
+                        <label for="join-id">Kamernummer</label>
+                        <input type="number" class="form-control" id="join-id"
+                               placeholder="Voer een beschikbare kamer in">
+                    </div>
+                    <hr>
+                    <input type="submit" class="btn btn-primary" value="Doe mee!">
+                </form>
             </div>
         </div>
     </div>
+</div>
+
+<div class="sps-wrapper" id="sps-wrapper">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-6">
+                <div class="card border-ligh">
+                    <div class="card-header bg-transparent">
+                        <form id="chat-form">
+                            <div class="form-group">
+                                <input id="chat" class="form-control" placeholder="Bericht...">
+                            </div>
+                            <button id="send" class="btn btn-primary">Verstuur</button>
+                        </form>
+                    </div>
+                    <div class="card-body scrollbar scrollbar-morpheus-den" id="chatlist">
+                        <ul id="events" class="list-group list-group-flush"></ul>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="col-md-2 text-center">
+                <img src="../images/steen.png"/>
+                <button id="sps-steen" class="btn btn-outline-dark">STEEN</button>
+            </div>
+            <div class="col-md-2 text-center">
+                <img src="../images/papier.png"/>
+                <button id="sps-papier" class="btn btn-outline-dark">PAPIER</button>
+            </div>
+            <div class="col-md-2 text-center">
+                <img src="../images/schaar.png"/>
+                <button id="sps-schaar" class="btn btn-outline-dark">SCHAAR</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 <!--
         <div class="wrapper flex">
@@ -131,9 +146,9 @@
 
         </div>
     </div> -->
-    <!-- scripts must be called after the page has loaded -->
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="src/client.js"></script>
+<!-- scripts must be called after the page has loaded -->
+<script src="/socket.io/socket.io.js"></script>
+<script src="src/client.js"></script>
 </body>
 
 </html>
