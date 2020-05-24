@@ -11,7 +11,7 @@ document.querySelector("#create-form").addEventListener("submit",function(e){
     //Gather the filled in username and roomnumber
     let roomId = document.querySelector("#create-id");
     let userName = document.querySelector("#create-name");
-    currentRoom = roomId;
+    currentRoom = roomId.value;
     socket.emit('create room', {username: userName.value, room: roomId.value});
     //Clear the fields
     userName.value = "";
@@ -33,7 +33,6 @@ document.querySelector("#join-form").addEventListener("submit", function(e){
 });
 
 socket.on('start game', function(data){
-    console.log("yeey made it");
     if(data == true){
         //Hide login screen
         HideLogin();
@@ -53,7 +52,20 @@ socket.on('start game', function(data){
 
 socket.on('nickname', function(data){
     userName = data;
-})
+});
+
+socket.on('get user', function(data){
+    if(data.length == 2){
+        document.getElementById("status").innerHTML = "Maak je keuze!"
+    }else{
+        document.getElementById("status").innerHTML = "Wachten op andere speler...";
+    }
+    let html = '';
+    for(let i = 0; i < data.length; i++){
+        html += '<li class="list-group-item">' + data[i] + '</li>';
+    }
+    document.getElementById("users").innerHTML = html;
+});
 
 
 function HideLogin(){
@@ -63,34 +75,40 @@ function HideLogin(){
 function ShowGame(){
     console.log("trying to show the game screen");
     document.getElementById("sps-wrapper").style.display = "block";
+    //Determine if there are two players
 }
 
+function writeText(text){
+    console.log(text.length);
+    //Find parent list element where item can be merged into
+    const parent = document.querySelector("#events");
+    //Create a new list item
+    const el = document.createElement('li');
+    //Set the text of the list item to the text passed through the function
+    el.innerHTML = text;
+    //Add the newly created list item to the parent list
+    parent.insertBefore(el, parent.firstChild);
+}
 
+const onChatFormSubmitted = (e) => {
+    //We will handel the event our self
+    e.preventDefault();
+    //Gets the input from the form
+    const input = document.querySelector("#chat");
+    //Save the current state of the input
+    const inputText = input.value;
+    //Clear the input field
+    input.value = '';
 
+    //Send text to the server
+    socket.emit('message', inputText, currentRoom);
 
+};
 
+//writeText('Game: Welkom bij SPS!');
 
+socket.on('message', writeText);
+document
+    .querySelector('#chat-form')
+    .addEventListener('submit', onChatFormSubmitted);
 
-//
-// function writeText(text){
-//     console.log(text.length);
-//     //Find parent list element where item can be merged into
-//     const parent = document.querySelector("#events");
-//     //Create a new list item
-//     const el = document.createElement('li');
-//     //Set the text of the list item to the text passed through the function
-//     el.innerHTML = text;
-//     //Add the newly created list item to the parent list
-//     parent.appendChild(el);
-// }
-//
-//
-//
-// writeText('Welkom bij het klassieke gokspel: Steen, Papier en Schaar!');
-//
-// socket.on('message', writeText);
-// document
-//     .querySelector('#chat-form')
-//     .addEventListener('submit', onJoinFormSubmitted);
-//
-// document
