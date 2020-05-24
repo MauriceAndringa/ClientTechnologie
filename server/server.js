@@ -56,6 +56,8 @@ io.sockets.on('connection', function(socket){
             console.log("User " + userName + " connected to room " + roomNumber);
             socket.emit('start game', true);
             socket.emit('nickname', userName);
+            io.in(roomNumber).emit('get user', findRoom(roomNumber).users);
+            io.in(roomNumber).emit('message', "Game: " + socket.nickname + " joined");
         }
 
     });
@@ -90,21 +92,46 @@ io.sockets.on('connection', function(socket){
             console.log("User " + userName + " connected to room " + roomNumber);
             socket.emit('start game', true);
             socket.emit('nickname', userName);
+            io.in(roomNumber).emit('get user', findRoom(roomNumber).users);
+            io.in(roomNumber).emit('message', "Game: " + socket.nickname + " joined");
+            //socket.emit('message', "Game: " + socket.nickname + " joined");
         }
-
     });
 
+    socket.on('userlist', function (data) {
+        io.sockets.in(data).emit('userlist', findRoom(data).users);
+    });
 
-
-
+    socket.on('disconnect', function(){
+        let roomNumber = "";
+        for(let i = 0; i < rooms.length; i++){
+            if(rooms[i].users.includes(socket.nickname)){
+                roomNumber = rooms[i].roomNumber;
+                let roomIndex = rooms[i].users.indexOf(socket.nickname);
+                if (roomIndex >= 0){
+                    rooms[i].users.splice(roomIndex, 1); //remove user from room
+                    console.log("User " + socket.nickname + " has left room " + roomNumber);
+                    socket.emit('get user', findRoom(roomNumber).users);
+                    io.in(roomNumber).emit('message', "Game: " + socket.nickname + " left");
+                    //socket.emit('message', "Game: " + socket.nickname + " left");
+                }
+                io.sockets.in(roomNumber).emit('userlist', findRoom(roomNumber).users);
+                if (rooms[i].users.length == 0){
+                    rooms.splice(i, 1) //if room is empty, delete room from rooms
+                    console.log("Room " + roomNumber + "is empty, Room is deleted from list");
+                }
+            }
+        }
+        console.log("User " + socket.nickname + " left");
+    });
 
     //When a user presses the 'send' button
-    //socket.on('message', function(inputText){
+    socket.on('message', function(inputText, room){
         //Emit the message to all the client in the room
-        //io.sockets.emit('message', 'User ' + socket.id + ': ' + inputText);
-    //});
-
-
+        if(!(inputText == null)){
+            io.to(room).emit('message', socket.nickname + ": " + inputText);
+        }
+    });
 });
 
 server.on('error', (err) => {
