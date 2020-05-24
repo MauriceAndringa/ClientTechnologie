@@ -11,89 +11,129 @@
 
 <body>
 
-<!--<div id="splash"></div>-->
+<div id="splash">
+</div>
+<div class="container box bg-light">
 
-<div id="login" class="login">
-    <div class="container">
-        <div class="header">
-            <h1>Steen Papier Schaar</h1>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6">
-                <h3>Maak een kamer aan!</h3>
-                <form id="create-form">
-                    <div class="form-group">
-                        <label for="create-name">Gebruikersnaam</label>
-                        <input type="text" class="form-control" id="create-name" placeholder="Super_awes0me-user1">
-                    </div>
-                    <div class="form-group">
-                        <label for="create-id">Kamernummer</label>
-                        <input type="number" class="form-control" id="create-id" placeholder="0, 1, 2...">
-                    </div>
-                    <hr>
-                    <input type="submit" class="btn btn-primary" value="Start spel!">
-                </form>
+    <div id="login" class="login">
+        <div class="container bg-light">
+            <div class="header">
+                <p class="logo">Steen Papier Schaar</p>
             </div>
-            <div class="col-md-6">
-                <h3>Doe mee aan een spel!</h3>
-                <form id="join-form">
-                    <div class="form-group">
-                        <label for="join-name">Gebruikersnaam</label>
-                        <input type="text" class="form-control" id="join-name" placeholder="SPS-L33t_playr">
-                    </div>
-                    <div class="form-group">
-                        <label for="join-id">Kamernummer</label>
-                        <input type="number" class="form-control" id="join-id"
-                               placeholder="Voer een beschikbare kamer in">
-                    </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <h3>Maak een kamer aan!</h3>
+                    <form id="create-form">
+                        <div class="form-group">
+                            <label for="create-name">Gebruikersnaam</label>
+                            <input type="text" class="form-control" id="create-name" placeholder="Super_awes0me-user1">
+                        </div>
+                        <div class="form-group">
+                            <label for="create-id">Kamernummer</label>
+                            <input type="number" class="form-control" id="create-id" placeholder="0, 1, 2...">
+                        </div>
+                        <hr>
+                        <input type="submit" class="btn btn-outline-dark" value="Start spel!">
+                    </form>
                     <hr>
-                    <input type="submit" class="btn btn-primary" value="Doe mee!">
-                </form>
+                    <div class="alert alert-danger" role="alert" id="alertCreate">
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h3>Doe mee aan een spel!</h3>
+                    <form id="join-form">
+                        <div class="form-group">
+                            <label for="join-name">Gebruikersnaam</label>
+                            <input type="text" class="form-control" id="join-name" placeholder="SPS-L33t_playr">
+                        </div>
+                        <div class="form-group">
+                            <label for="join-id">Kamernummer</label>
+                            <input type="number" class="form-control" id="join-id"
+                                   placeholder="Voer een beschikbare kamer in">
+                        </div>
+                        <hr>
+                        <input type="submit" class="btn btn-outline-dark" value="Doe mee!">
+                    </form>
+                    <hr>
+                    <div class="alert alert-danger" role="alert" id="alertJoin">
+                        <!--                    error messages when joining a room-->
+                    </div>
+
+                </div>
+
+                <div class="col-md-4 ">
+                    <h3>Rooms</h3>
+                    <ul id="rooms" class="list-group list-group-flush scrollbar scrollbar-morpheus-den bg-light">
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="sps-wrapper" id="sps-wrapper">
-    <div class="container">
-        <div class="row">
+    <div class="sps-wrapper" id="sps-wrapper">
+        <div class="container">
+            <div class="row">
 
-            <div class="col-md-6">
-                <div class="card border-ligh">
-                    <div class="card-header bg-transparent">
-                        <form id="chat-form">
-                            <div class="form-group">
-                                <input id="chat" class="form-control" placeholder="Bericht...">
-                            </div>
-                            <button id="send" class="btn btn-primary">Verstuur</button>
-                        </form>
+                <div class="col-md-4">
+
+                    <div class="card border-light">
+                        <div class="card-header bg-light">
+                            <h3>Chatbox</h3>
+                            <form id="chat-form">
+                                <div class="form-group">
+                                    <input id="chat" class="form-control" placeholder="Bericht...">
+                                </div>
+                                <button id="send" class="btn btn-outline-dark">Verstuur</button>
+                            </form>
+                        </div>
+                        <div class="card-body scrollbar scrollbar-morpheus-den bg-light" id="chatlist">
+                            <ul id="events" class="list-group list-group-flush"></ul>
+                        </div>
                     </div>
-                    <div class="card-body scrollbar scrollbar-morpheus-den" id="chatlist">
-                        <ul id="events" class="list-group list-group-flush"></ul>
+                    <div class="card border-light">
+                        <div class="card-header bg-light">
+                            <h3>Gebruikers</h3>
+                        </div>
+                        <div class="card-body bg-light">
+                            <ul id="users" class="list-group list-group-flush">
+
+                            </ul>
+                        </div>
+
+
                     </div>
+
+
                 </div>
 
 
-            </div>
+                <div class="col-md-4" style="margin-top: 125px">
+                    <div class="col text-center">
+                        <img src="../images/steen.png"/>
+                        <button id="sps-steen" class="btn btn-outline-dark">STEEN</button>
+                    </div>
+                    <div class="col text-center">
+                        <img src="../images/papier.png"/>
+                        <button id="sps-papier" class="btn btn-outline-dark">PAPIER</button>
+                    </div>
+                    <div class="col text-center">
+                        <img src="../images/schaar.png"/>
+                        <button id="sps-schaar" class="btn btn-outline-dark">SCHAAR</button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <ul id="results" class="list-group list-group-flush">
 
-            <div class="col-md-2 text-center">
-                <img src="../images/steen.png"/>
-                <button id="sps-steen" class="btn btn-outline-dark">STEEN</button>
-            </div>
-            <div class="col-md-2 text-center">
-                <img src="../images/papier.png"/>
-                <button id="sps-papier" class="btn btn-outline-dark">PAPIER</button>
-            </div>
-            <div class="col-md-2 text-center">
-                <img src="../images/schaar.png"/>
-                <button id="sps-schaar" class="btn btn-outline-dark">SCHAAR</button>
-            </div>
+                    </ul>
+                </div>
 
+            </div>
         </div>
     </div>
-</div>
 
+</div>
 <!--
         <div class="wrapper flex">
             <div class="h1title flex">
