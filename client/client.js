@@ -3,7 +3,7 @@ const socket = io();
 
 let userName = "";
 let currentRoom;
-var submitted = false;
+let submitted = false;
 
 //Creating a room
 document.querySelector("#create-form").addEventListener("submit",function(e){
@@ -45,7 +45,7 @@ document.querySelector('#chat-form').addEventListener('submit', function (e) {
         //Clear the input field
         input.value = '';
         //Send text to the server
-        socket.emit('message', ('<b>' + userName + '</b>' + ": " + inputText).toString(), currentRoom);
+        socket.emit('global message', ('<b>' + userName + '</b>' + ": " + inputText).toString(), currentRoom);
     }
 });
 
@@ -54,8 +54,7 @@ document.querySelector("#sps-steen").addEventListener('click', function(e){
     if(!submitted){
         submitted = true;
         socket.emit('player choice', currentRoom, userName, 'steen');
-        socket.emit('message', '<b>Game: </b>' + "Je hebt steen gekozen, wachten op andere speler...");
-        //socket.emit('message', '<b>'+userName+': </b>'+ "Ik heb gekozen!", currentRoom);
+        socket.emit('broadcast message', '<b>Game: </b><i>'+userName+'</i>' + " heeft een keuze gemaakt", currentRoom);
     }
     else{
         socket.emit('message', '<b>Game: </b>' + "Je hebt al gekozen!");
@@ -67,8 +66,7 @@ document.querySelector("#sps-papier").addEventListener('click', function(e){
     if(!submitted){
         submitted = true;
         socket.emit('player choice', currentRoom, userName, 'papier');
-        socket.emit('message', '<b>Game: </b>' + "Je hebt papier gekozen, wachten op andere speler...");
-        //socket.emit('message', '<b>'+userName+'</b>'+ "Ik heb gekozen!", currentRoom);
+        socket.emit('broadcast message', '<b>Game: </b><i>'+userName+'</i>' + " heeft een keuze gemaakt", currentRoom);
     }
     else{
         socket.emit('message', '<b>Game: </b>' + "Je hebt al gekozen!");
@@ -80,8 +78,8 @@ document.querySelector("#sps-schaar").addEventListener('click', function(e){
     if(!submitted){
         submitted = true;
         socket.emit('player choice', currentRoom, userName, 'schaar');
-        socket.emit('message', '<b>Game: </b>' + "Je hebt schaar gekozen, wachten op andere speler...");
-        //socket.emit('message', '<b>'+userName+'</b>'+ "Ik heb gekozen!", currentRoom);
+        socket.emit('broadcast message', '<b>Game: </b><i>'+userName+'</i>' + " heeft een keuze gemaakt", currentRoom);
+        //socket.emit('message', '<b>Game: </b>' + "Je hebt schaar gekozen, wachten op andere speler...");
     }
     else{
         socket.emit('message', '<b>Game: </b>' + "Je hebt al gekozen!");
@@ -96,7 +94,6 @@ function hideLogin(){
 function showGame(){
     document.getElementById("sps-wrapper").style.display = "block";
     disableButtons();
-    //Determine if there are two players
 }
 
 function enableButtons(){
@@ -134,26 +131,40 @@ socket.on('game start', function(){
 });
 
 socket.on('player 1 win', function(choices){
-    submitted = false;
-    if(choices[0][0] === userName){
-        socket.emit('message', '<b>Game: </b>' + "Je hebt gewonnen!");
-    }else{
-        socket.emit('message', '<b>Game: </b>' + choices[0][0].toString() + " heeft gewonnen!");
-    }
+    setTimeout(function(){
+        submitted = false;
+        if(choices[0][0] === userName){
+            socket.emit('self message', '<b>Game: </b>' + "Je hebt gewonnen!" + '<br><i>' + choices[0][0] + "</i> had " + choices[0][1] + " en <i>jij</i> had " + choices[1][1] + ".");
+        }else{
+            socket.emit('self message', '<b>Game: </b>' + "Je hebt verloren..." + '<br><i>' + choices[1][0] + "</i> had " + choices[1][1] + " en <i>jij</i> had " + choices[0][1] + ".");
+        }
+    }, 500);
+
 });
 
 socket.on('player 2 win', function(choices){
-    submitted = false;
-    if(choices[1][0] === userName){
-        socket.emit('message', '<b>Game: </b>' + "Je hebt gewonnen!");
-    }else{
-        socket.emit('message', '<b>Game: </b>' + choices[1][0].toString() + " heeft gewonnen!");
-    }
+    setTimeout(function(){
+        submitted = false;
+        if(choices[1][0] === userName){
+            socket.emit('self message', '<b>Game: </b>' + "Je hebt gewonnen!" + '<br><i>' + choices[0][0] + "</i> had " + choices[0][1] + " en <i>jij</i> had " + choices[1][1] + ".");
+        }else{
+            socket.emit('self message', '<b>Game: </b>' + "Je hebt verloren..." + '<br><i>' + choices[1][0] + "</i> had " + choices[1][1] + " en <i>jij</i> had " + choices[0][1] + ".");
+        }
+    }, 500);
+
 });
 
-socket.on('tie', function(){
-    submitted = false;
-    socket.emit('message', '<b>Game: </b>' + "Gelijkspel! niemand wint...");
+socket.on('tie', function(choices){
+    setTimeout(function(){
+        submitted = false;
+        if(choices[1][0] === userName){
+            socket.emit('self message', '<b>Game: </b>' + "Gelijkspel! Niemand wint..." + '<br><i>' + choices[0][0] + "</i> had " + choices[0][1] + " en <i>jij</i> had " + choices[1][1] + ".");
+        }
+        else{
+            socket.emit('self message', '<b>Game: </b>' + "Gelijkspel! Niemand wint..." + '<br><i>' + choices[1][0] + "</i> had " + choices[1][1] + " en <i>jij</i> had " + choices[0][1] + ".");
+        }
+
+    }, 500);
 });
 
 //Set nickname for socket
@@ -162,10 +173,17 @@ socket.on('nickname', function(data){
 });
 
 socket.on('get room', function(data){
-
     let html = '';
-    for(let i = 0; i < data.length; i++){
-        html += '<li class="list-group-item bg-light"> Room : ' + data[i].roomNumber + ' - Aantal spelers : ' + data[i].users.length + '</li>';
+    if(data.length > 0){
+        for(let i = 0; i < data.length; i++) {
+            if (data[i].users.length >= 2) {
+                html += '<li class="list-group-item bg-light"> Kamer: ' + data[i].roomNumber + ' - Vol!</li>';
+            } else {
+                html += '<li class="list-group-item bg-light"> Kamer: ' + data[i].roomNumber + ' - Wachten op speler...</li>';
+            }
+        }
+    }else{
+        html += '<li class="list-group-item bg-light"> Geen beschikbare kamers. Maak een kamer aan om een spel te starten!</li>';
     }
     document.getElementById("rooms").innerHTML = html;
 });
@@ -193,13 +211,18 @@ socket.on('get user', function(data){
     }
     let html = '';
     for(let i = 0; i < data.length; i++){
-        console.log(data[i]);
-        html += '<li class="list-group-item bg-light">' + data[i] + '</li>';
+        if(data[i] === userName){
+            html += '<li class="list-group-item bg-light">' + data[i] + ' : jij</li>';
+        }
+        else{
+            html += '<li class="list-group-item bg-light">' + data[i] + '</li>';
+        }
+
     }
     document.getElementById("users").innerHTML = html;
 });
 
-socket.on('message', function(text, room){
+socket.on('message', function(text){
     //Find parent list element where item can be merged into
     const parent = document.querySelector("#events");
     //Create a new list item

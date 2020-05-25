@@ -29,7 +29,7 @@ const findRoom = function(number){
 //User connected to the game
 io.sockets.on('connection', function(socket){
     socket.nickname = "";
-    socket.emit('get room', rooms);
+    io.sockets.emit('get room', rooms);
 
     //Creating room
     socket.on('create room', function(data){
@@ -51,7 +51,7 @@ io.sockets.on('connection', function(socket){
             socket.nickname = userName;
             let newRoom = {roomNumber: roomNumber, users: [userName], choices: []};
             rooms.push(newRoom);
-            socket.emit('get room', rooms);
+            io.sockets.emit('get room', rooms);
             socket.join(roomNumber);
             socket.emit('show game', true, findRoom(roomNumber).users);
             socket.emit('nickname', userName);
@@ -86,7 +86,7 @@ io.sockets.on('connection', function(socket){
             socket.nickname = userName;
             socket.join(roomNumber);
             findRoom(roomNumber).users.push(userName);
-            console.log("User " + userName + " connected to room " + roomNumber);
+            io.sockets.emit('get room', rooms);
             socket.emit('show game', true, findRoom(roomNumber).users);
             socket.emit('nickname', userName);
             io.sockets.in(roomNumber).emit('get user', findRoom(roomNumber).users);
@@ -94,8 +94,8 @@ io.sockets.on('connection', function(socket){
         }
     });
 
-    socket.on('user list', function (data) {
-        io.sockets.in(data).emit('user list', findRoom(data).users);
+    socket.on('user list', function (room) {
+        io.sockets.in(room).emit('user list', findRoom(room).users);
     });
 
     //Leaving rooms
@@ -114,18 +114,24 @@ io.sockets.on('connection', function(socket){
                 if (rooms[i].users.length == 0){
                     rooms.splice(i, 1) //if room is empty, delete room from rooms
                 }
+                io.sockets.emit('get room', rooms);
             }
         }
     });
 
-    //Sending chat messages
-    socket.on('message', function(inputText, room){
-        //Emit the message to all the client in the room
-        if(!(room == null)){
-            io.sockets.in(room).emit('message', inputText);
-        }else{
-            socket.emit('message', inputText);
-        }
+    //Sending chat messages to all users in room
+    socket.on('global message', function(text, room){
+        io.sockets.in(room).emit('message', text);
+    });
+
+    //Sending chat messages to all users except sender
+    socket.on('broadcast message', function(text, room){
+        socket.broadcast.to(room).emit('message', text);
+    });
+
+    //Sending chat messages to itself
+    socket.on('self message', function(text){
+        socket.emit('message', text);
     });
 
     //Rock, Paper, Scissor
@@ -134,12 +140,11 @@ io.sockets.on('connection', function(socket){
         findRoom(room).choices.push([userName, choiceMade]);
         //Check if both players made decision
         if(findRoom(room).choices.length == 2){
-            io.sockets.in(room).emit('message', '<b>Game: </b>' + "Beide spelers hebben hun keuze gemaakt");
             switch (findRoom(room).choices[0][1].toString()) {
                 case 'steen':
                     switch (findRoom(room).choices[1][1]) {
                         case 'steen':
-                            io.sockets.in(room).emit('tie');
+                            io.sockets.in(room).emit('tie', findRoom(room).choices);
                             break;
                         case 'papier':
                             io.sockets.in(room).emit('player 2 win', findRoom(room).choices);
@@ -159,7 +164,7 @@ io.sockets.on('connection', function(socket){
                             break;
 
                         case 'papier':
-                            io.sockets.in(room).emit('tie');
+                            io.sockets.in(room).emit('tie', findRoom(room).choices);
                             break;
 
                         case 'schaar':
@@ -183,7 +188,7 @@ io.sockets.on('connection', function(socket){
                             break;
 
                         case 'schaar':
-                            io.sockets.in(room).emit('tie');
+                            io.sockets.in(room).emit('tie', findRoom(room).choices);
                             break;
 
                         default:
@@ -194,7 +199,7 @@ io.sockets.on('connection', function(socket){
                 default:
                     break;
             }
-            findRoom(room).choices = [];
+            findRoom(room).choices = []; 
         }
     });
 });
