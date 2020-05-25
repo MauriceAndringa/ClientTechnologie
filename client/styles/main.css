@@ -92,6 +92,7 @@ img{
 
 .box{
     height: 100%;
+    overflow: auto;
 }
 
 html,
@@ -109,7 +110,6 @@ body {
 .logo{
     font-family: 'MegalomaniaHollow-Regular';
     font-size: 75px;
-
 }
 
 @font-face {
@@ -123,4 +123,50 @@ body {
     url("./fonts/MegalomaniaHollow.woff2") format("woff2"); /* Modern Browsers */
     font-weight: normal;
     font-style: normal;
+}
+
+.choices{
+    margin-top: 125px;
+}
+
+@media screen and (max-width: 768px) {
+    .choices {
+        margin-top: 0px;
+        margin-bottom: 50px;
+    }
+    #chatlist{
+        height: 250px;
+        max-height: 250px;
+        overflow:scroll;
+        -webkit-overflow-scrolling: touch;
+    }
+    img{
+        width: 40px;
+        height : 40px;
+    }
+    .logo{
+        font-family: 'MegalomaniaHollow-Regular';
+        font-size: 50px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .choices {
+        margin-top: 25px;
+        margin-bottom: 25px;
+    }
+    #chatlist{
+        height: 250px;
+        max-height: 250px;
+        overflow:scroll;
+        -webkit-overflow-scrolling: touch;
+    }
+    img{
+        width: 60px;
+        height : 60px;
+    }
+    .logo{
+        font-family: 'MegalomaniaHollow-Regular';
+        font-size: 50px;
+    }
 }
