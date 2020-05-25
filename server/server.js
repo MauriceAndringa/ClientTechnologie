@@ -1,3 +1,5 @@
+//copyright: Maurice Andringa (s1082583) en Kevin Geubels (s1090780)
+
 //Set up variables for dependencies
 const http = require('http');
 const express = require('express');
@@ -5,7 +7,6 @@ const socketio = require('socket.io');
 
 //Defines the path of the client files (including index.html)
 const clientPath = __dirname + '/../client';
-const choices = [];
 
 const app = express();
 app.use(express.static(clientPath));
@@ -199,7 +200,7 @@ io.sockets.on('connection', function(socket){
                 default:
                     break;
             }
-            findRoom(room).choices = []; 
+            findRoom(room).choices = [];
         }
     });
 });

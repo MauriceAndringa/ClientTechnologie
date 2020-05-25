@@ -1,9 +1,21 @@
+//copyright: Maurice Andringa (s1082583) en Kevin Geubels (s1090780)
+
+
 //Include socket.io to connect client to server
 const socket = io();
 
 let userName = "";
 let currentRoom;
 let submitted = false;
+
+const sound_win = new Audio('/sound/win_sound.mp3');
+sound_win.load();
+const sound_lose = new Audio('/sound/lose_sound.mp3');
+sound_lose.load();
+const sound_tie = new Audio('/sound/tie_sound');
+sound_tie.load();
+const sound_error = new Audio('/sound/error_sound.mp3');
+sound_error.load();
 
 //Creating a room
 document.querySelector("#create-form").addEventListener("submit",function(e){
@@ -55,6 +67,7 @@ document.querySelector("#sps-steen").addEventListener('click', function(e){
         submitted = true;
         socket.emit('player choice', currentRoom, userName, 'steen');
         socket.emit('broadcast message', '<b>Game: </b><i>'+userName+'</i>' + " heeft een keuze gemaakt", currentRoom);
+        socket.emit('self message', '<b>Game: </b> Je hebt <i>steen</i> gekozen');
     }
     else{
         socket.emit('message', '<b>Game: </b>' + "Je hebt al gekozen!");
@@ -67,6 +80,7 @@ document.querySelector("#sps-papier").addEventListener('click', function(e){
         submitted = true;
         socket.emit('player choice', currentRoom, userName, 'papier');
         socket.emit('broadcast message', '<b>Game: </b><i>'+userName+'</i>' + " heeft een keuze gemaakt", currentRoom);
+        socket.emit('self message', '<b>Game: </b> Je hebt <i>papier</i> gekozen');
     }
     else{
         socket.emit('message', '<b>Game: </b>' + "Je hebt al gekozen!");
@@ -79,10 +93,10 @@ document.querySelector("#sps-schaar").addEventListener('click', function(e){
         submitted = true;
         socket.emit('player choice', currentRoom, userName, 'schaar');
         socket.emit('broadcast message', '<b>Game: </b><i>'+userName+'</i>' + " heeft een keuze gemaakt", currentRoom);
-        //socket.emit('message', '<b>Game: </b>' + "Je hebt schaar gekozen, wachten op andere speler...");
+        socket.emit('self message', '<b>Game: </b> Je hebt <i>schaar</i> gekozen');
     }
     else{
-        socket.emit('message', '<b>Game: </b>' + "Je hebt al gekozen!");
+        socket.emit('message', '<b>Game: </b>' + "Je hebt een keuze gemaakt!");
     }
 });
 
@@ -107,7 +121,6 @@ function disableButtons(){
     document.getElementById("sps-papier").disabled = true;
     document.getElementById("sps-schaar").disabled = true;
 }
-
 
 //Event to show game screen when the game starts
 socket.on('show game', function(data, users){
@@ -135,10 +148,12 @@ socket.on('player 1 win', function(choices){
         submitted = false;
         if(choices[0][0] === userName){
             socket.emit('self message', '<b>Game: </b>' + "Je hebt gewonnen!" + '<br><i>' + choices[0][0] + "</i> had " + choices[0][1] + " en <i>jij</i> had " + choices[1][1] + ".");
+            sound_win.play();
         }else{
             socket.emit('self message', '<b>Game: </b>' + "Je hebt verloren..." + '<br><i>' + choices[1][0] + "</i> had " + choices[1][1] + " en <i>jij</i> had " + choices[0][1] + ".");
+            sound_lose.play();
         }
-    }, 500);
+    }, 800);
 
 });
 
@@ -147,10 +162,12 @@ socket.on('player 2 win', function(choices){
         submitted = false;
         if(choices[1][0] === userName){
             socket.emit('self message', '<b>Game: </b>' + "Je hebt gewonnen!" + '<br><i>' + choices[0][0] + "</i> had " + choices[0][1] + " en <i>jij</i> had " + choices[1][1] + ".");
+            sound_win.play();
         }else{
             socket.emit('self message', '<b>Game: </b>' + "Je hebt verloren..." + '<br><i>' + choices[1][0] + "</i> had " + choices[1][1] + " en <i>jij</i> had " + choices[0][1] + ".");
+            sound_lose.play();
         }
-    }, 500);
+    }, 800);
 
 });
 
@@ -159,12 +176,14 @@ socket.on('tie', function(choices){
         submitted = false;
         if(choices[1][0] === userName){
             socket.emit('self message', '<b>Game: </b>' + "Gelijkspel! Niemand wint..." + '<br><i>' + choices[0][0] + "</i> had " + choices[0][1] + " en <i>jij</i> had " + choices[1][1] + ".");
+            sound_tie.play();
         }
         else{
             socket.emit('self message', '<b>Game: </b>' + "Gelijkspel! Niemand wint..." + '<br><i>' + choices[1][0] + "</i> had " + choices[1][1] + " en <i>jij</i> had " + choices[0][1] + ".");
+            sound_tie.play();
         }
 
-    }, 500);
+    }, 800);
 });
 
 //Set nickname for socket
@@ -190,6 +209,7 @@ socket.on('get room', function(data){
 
 //Display error message when creating a room
 socket.on('errorMessageCreate', function(data){
+    sound_error.play();
     document.getElementById('alertCreate').style.display = "block";
     document.getElementById('alertJoin').style.display = "none";
     document.getElementById('alertCreate').innerHTML = data;
@@ -197,6 +217,7 @@ socket.on('errorMessageCreate', function(data){
 
 //Display error message when joining a room
 socket.on('errorMessageJoin', function(data){
+    sound_error.play();
     document.getElementById('alertJoin').style.display = "block";
     document.getElementById('alertCreate').style.display = "none";
     document.getElementById('alertJoin').innerHTML = data;
